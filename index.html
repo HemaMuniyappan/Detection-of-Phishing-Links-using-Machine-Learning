@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Phishing Link Detection</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <h1>Phishing Link Detector</h1>
+    <p>Enter URL to check:</p>
+
+    <input id="url" placeholder="https://example.com">
+    <button onclick="checkURL()">Check</button>
+
+    <h2 id="result"></h2>
+
+<script>
+function checkURL() {
+    const urlValue = document.getElementById("url").value;
+
+    fetch("/predict", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ url: urlValue })
+    })
+    .then(res => res.json())
+    .then(data => {
+        document.getElementById("result").innerHTML = 
+            data.result === "Fake" 
+            ? `<span style="color:red">Fake ❌</span>` 
+            : `<span style="color:green">Legit ✔️</span>`;
+    });
+}
+</script>
+
+</body>
+</html>
